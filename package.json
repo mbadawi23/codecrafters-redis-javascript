@@ -1,5 +1,20 @@
 {
   "dependencies": {
     "resp": "^0.1.1"
-  }
+  },
+  "name": "elkammar-codecrafters-redis-javascript",
+  "description": "This is a starting point for JavaScript solutions to the [\"Build Your Own Redis\" Challenge](https://codecrafters.io/challenges/redis).",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app/main.js", 
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.codecrafters.io/1acbcb221b1036c2"
+  },
+  "author": "Mohamed Elkammar",
+  "license": "MIT"
 }

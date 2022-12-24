@@ -9,7 +9,7 @@ const server = net.createServer((connection) => {
   // Handle connection
   console.log("Hello from my CodeCrafters' redis!");
 
-  console.log("connection", connection);
+  // console.log("connection", connection);
   connection.on("connection", (stream) => console.log(stream));
 });
 

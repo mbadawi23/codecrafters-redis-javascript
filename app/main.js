@@ -10,6 +10,7 @@ const server = net.createServer((connection) => {
   console.log("Hello from my CodeCrafters' redis!");
 
   console.log("connection", connection);
+  connection.on("connection", (stream) => console.log(stream));
 });
 
 server.listen(6379, "127.0.0.1");

@@ -79,13 +79,11 @@ const server = net.createServer((connection) => {
   console.log("Connection received from client.");
 
   const parser = new Resp();
-  console.log("parser.OK", parser.OK);
 
   connection.on("data", (buffer) => {
     const data = buffer.toString();
-    console.log("data", data);
-
     const parsed = parser.parse(data);
+
     console.log("parsed", parsed);
     parsed.forEach((item, i) => {
       if (item.toUpperCase() === "PING") {

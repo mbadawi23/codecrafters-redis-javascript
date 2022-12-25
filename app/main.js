@@ -80,6 +80,7 @@ const server = net.createServer((connection) => {
   connection.on("data", (buffer) => {
     const data = buffer.toString();
     console.log("data", data);
+    console.log("parser.parse(data)", parser.parse(data));
 
     if (data === "+PING") {
       connection.write("+PONG\r\n");

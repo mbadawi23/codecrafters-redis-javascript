@@ -28,12 +28,15 @@ const server = net.createServer((connection) => {
       };
       const respArr = parseArray(data);
       respArr.forEach((el, i) => {
-        if (el === "PING") {
+        if (el.toUpperCase() === "PING") {
           console.log("PONG");
           connection.write("+PONG\r\n");
-        } else if (el === "ECHO") {
+        } else if (el.toUpperCase() === "ECHO") {
           console.log("ECHO", respArr[i + 1]);
           connection.write(`+${respArr[i + 1]}\r\n`);
+        } else {
+          console.log("Command Not Supported!!!");
+          connection.write("-ERROR Command not supported.\r\n");
         }
       });
     }

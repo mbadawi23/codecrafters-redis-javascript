@@ -20,16 +20,22 @@ const server = net.createServer((connection) => {
         console.log("resp", resp);
         const rawArr = resp.split(/\r?\n/);
         console.log("rawArr", rawArr);
-        const arr = rawArr.reduce((result, item) => {
-          console.log("item", item);
-          const re = /[\*\$\+\-\s]*/;
-          if (re.test(item) || /\s/.test(item)) return result;
-          else return item;
-        }, []);
-        console.log("arr", arr);
-        return resp;
+        const filtered = rawArr.filter(
+          (item) => !/[\*\$\+\-]/.test(item) && !/^(?![\s\S])/.test(item)
+        );
+        console.log("filtered", filtered);
+        return filtered;
       };
-      parseArray(data);
+      const respArr = parseArray(data);
+      respArr.forEach((el, i) => {
+        if (el === "PING") {
+          console.log("PONG");
+          connection.write("+PONG\r\n");
+        } else if (el === "ECHO") {
+          console.log("ECHO", respArr[i + 1]);
+          connection.write(`+${respArr[i + 1]}\r\n`);
+        }
+      });
     }
   });
 

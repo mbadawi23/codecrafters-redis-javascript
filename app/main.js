@@ -33,7 +33,9 @@ const server = net.createServer((connection) => {
           connection.write("+PONG\r\n");
         } else if (el.toUpperCase() === "ECHO") {
           console.log("ECHO", respArr[i + 1]);
+          if (i + 1 < respArr.length)
           connection.write(`+${respArr[i + 1]}\r\n`);
+          else connection.write("ERR wrong number of arguments for command");
         } else {
           console.log("Command Not Supported!!!");
           connection.write("-ERROR Command not supported.\r\n");

@@ -1,10 +1,4 @@
-class Resp {
-  EMPTY_STRING: string;
-  NULL_STRING: string;
-  OK: string;
-  PONG: string;
-  NULL_ARRAY: string;
-
+module.export = class Resp {
   constructor() {
     this.EMPTY_STRING = "$0\r\n\r\n";
     this.NULL_STRING = "$-1\r\n";
@@ -13,7 +7,7 @@ class Resp {
     this.PONG = "+PONG\r\n";
   }
 
-  encode(data: any): string {
+  encode(data) {
     if (data instanceof Array) {
       let encoded = `*${data.length}\r\n`;
       data.forEach((item) => (encoded = encoded.concat(this.encode(data))));
@@ -33,7 +27,7 @@ class Resp {
     }
   }
 
-  parse(data: string): any {
+  parse(data) {
     if (data.length === 0) return undefined;
 
     switch (data[0]) {
@@ -48,7 +42,7 @@ class Resp {
     }
   }
 
-  #parseArray(data: string): Array<string> {
+  #parseArray(data) {
     const rawArr = data.split(/\r?\n/);
     const filtered = rawArr.filter(
       (item) => !/[\*\$\+\-]/.test(item) && !/^(?![\s\S])/.test(item)
@@ -56,18 +50,16 @@ class Resp {
     return filtered;
   }
 
-  #parseString(data: string): string {
+  #parseString(data) {
     return data
       ? data.substring(data.indexOf("\r\n") + 2).replace("\r\n", "")
       : "";
   }
 
-  #parseNumber(data: string): Number {
+  #parseNumber(data) {
     return Number(data.slice(1).replace("\r\n", ""));
   }
 
   // TODO: to avoid recursion in encode()
   // #encodeSimpleTypes(data) {  }
-}
-
-export default Resp;
+};

@@ -85,7 +85,7 @@ const server = net.createServer((connection) => {
     const data = buffer.toString();
     const parsed = resp.parse(data);
     console.log("parsed", parsed);
-    parsed.forEach((item, i) => {
+    parsed.forEach((item, i, parsedRef) => {
       if (item.toUpperCase() === "PING") {
         console.log("PONG");
         connection.write(resp.PONG);
@@ -100,6 +100,7 @@ const server = net.createServer((connection) => {
       } else if (item.toUpperCase() === "SET") {
         if (i + 2 < parsed.length) {
           cach[parsed[i + 1]] = parsed[i + 2];
+          console.log("SET", resp.OK);
           connection.write(resp.OK);
         } else {
           connection.write(
@@ -109,6 +110,7 @@ const server = net.createServer((connection) => {
       } else {
         connection.write(`-ERR unknown command ${item}\r\n`);
       }
+      parsedRef.splice(i, 1);
     });
   });
 

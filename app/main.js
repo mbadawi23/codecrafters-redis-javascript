@@ -1,4 +1,5 @@
 const net = require("net");
+const Resp = require("../lib/resp-parser");
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
@@ -7,6 +8,8 @@ console.log("Logs from your program will appear here!");
 const server = net.createServer((connection) => {
   // Handle connection
   console.log("Connection received from client.");
+
+  const parser = new Resp();
 
   connection.on("data", (buffer) => {
     const data = buffer.toString();
@@ -27,18 +30,18 @@ const server = net.createServer((connection) => {
         return filtered;
       };
       const respArr = parseArray(data);
-      respArr.forEach((el, i) => {
-        if (el.toUpperCase() === "PING") {
+      respArr.forEach((item, i) => {
+        if (item.toUpperCase() === "PING") {
           console.log("PONG");
           connection.write("+PONG\r\n");
-        } else if (el.toUpperCase() === "ECHO") {
+        } else if (item.toUpperCase() === "ECHO") {
           console.log("ECHO", respArr[i + 1]);
           if (i + 1 < respArr.length)
-          connection.write(`+${respArr[i + 1]}\r\n`);
+            connection.write(`+${respArr[i + 1]}\r\n`);
           else connection.write("ERR wrong number of arguments for command");
         } else {
           console.log("Command Not Supported!!!");
-          connection.write("-ERROR Command not supported.\r\n");
+          connection.write(`-ERR unknown command ${item}\r\n`);
         }
       });
     }

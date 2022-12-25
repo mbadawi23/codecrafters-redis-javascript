@@ -78,24 +78,34 @@ const server = net.createServer((connection) => {
   // Handle connection
   console.log("Connection received from client.");
 
-  const parser = new Resp();
+  const resp = new Resp();
 
+  let cach = {};
   connection.on("data", (buffer) => {
     const data = buffer.toString();
-    const parsed = parser.parse(data);
-
+    const parsed = resp.parse(data);
     console.log("parsed", parsed);
     parsed.forEach((item, i) => {
       if (item.toUpperCase() === "PING") {
         console.log("PONG");
-        connection.write(parser.PONG);
+        connection.write(resp.PONG);
       } else if (item.toUpperCase() === "ECHO") {
         if (i + 1 < parsed.length) {
           connection.write(`+${parsed[i + 1]}\r\n`);
-        } else
+        } else {
           connection.write(
-            parser.encodeError("ERR wrong number of arguments for command")
+            resp.encodeError("ERR wrong number of arguments for command")
           );
+        }
+      } else if (item.toUpperCase() === "SET") {
+        if (i + 2 < parsed.length) {
+          cach[parsed[i + 1]] = parsed[i + 2];
+          connection.write(resp.OK);
+        } else {
+          connection.write(
+            resp.encodeError("ERR wrong number of arguments for command")
+          );
+        }
       } else {
         connection.write(`-ERR unknown command ${item}\r\n`);
       }

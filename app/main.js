@@ -22,8 +22,9 @@ const server = net.createServer((connection) => {
         console.log("rawArr", rawArr);
         const arr = rawArr.reduce((result, item) => {
           console.log("item", item);
-          const re = /[\*\$\+\-]*/;
-          if (re.test(item)) return result;
+          const re = /[\*\$\+\-\s]*/;
+          if (re.test(item) || /\s/.test(item)) return result;
+          else return item;
         }, []);
         console.log("arr", arr);
         return resp;

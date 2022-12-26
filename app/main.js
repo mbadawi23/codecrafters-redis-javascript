@@ -110,19 +110,19 @@ const server = net.createServer((connection) => {
           // get expiry from xp parameter
           const expiry = () => {
             const xpItem = parsedRef.find(
-              (item, fi) => item.toUpperCase() === "PX" && fi < i + 4
+              (item, fi) => item.toUpperCase() === "PX" && fi < i + 5
             );
             const xpIdx = parsedRef.indexOf(xpItem);
             return parsedRef[xpIdx + 1];
           };
-          console.log("parseInt(parsed[i + 3])", parseInt(parsed[i + 3]));
+          console.log("parsed[i + 4])", parsed[i + 4]);
           cach = [
             ...cach,
             {
               id: parsed[i + 1],
               value: parsed[i + 2],
               timestamp: Date.now(),
-              expiry: expiry ? parseInt(parsed[i + 3]) : undefined,
+              expiry: expiry ? parseInt(parsed[i + 4]) : undefined,
             },
           ];
           parsedRef.splice(i + 1, 2); // remove key and value from array, and leave whatever commands remain.

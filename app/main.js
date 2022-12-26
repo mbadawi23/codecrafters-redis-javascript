@@ -110,7 +110,7 @@ const server = net.createServer((connection) => {
           );
         }
       } else if (item.toUpperCase() === "GET") {
-        if (i + 2 < parsed.length) {
+        if (i + 1 < parsed.length) {
           parsed[i + 1] in cach
             ? connection.write(resp.encode(cach[parsed[i + 1]]))
             : connection.write(resp.NULL_STRING);

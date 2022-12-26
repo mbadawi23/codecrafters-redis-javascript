@@ -115,6 +115,7 @@ const server = net.createServer((connection) => {
             const xpIdx = parsedRef.indexOf(xpItem);
             return parsedRef[xpIdx + 1];
           };
+          console.log("parseInt(parsed[i + 3])", parseInt(parsed[i + 3]));
           cach = [
             ...cach,
             {

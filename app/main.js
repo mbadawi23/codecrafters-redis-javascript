@@ -107,6 +107,16 @@ const server = net.createServer((connection) => {
             resp.encodeError("ERR wrong number of arguments for command")
           );
         }
+      } else if (item.toUpperCase() === "GET") {
+        if (i + 2 < parsed.length) {
+          parsed[i + 1] in cach
+            ? connection.write(resp.encode(cach[parsed[i + 1]]))
+            : connection.write(resp.NULL_STRING);
+        } else {
+          connection.write(
+            resp.encodeError("ERR wrong number of arguments for command")
+          );
+        }
       } else {
         connection.write(`-ERR unknown command ${item}\r\n`);
       }

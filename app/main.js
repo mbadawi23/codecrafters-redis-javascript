@@ -127,6 +127,7 @@ const server = net.createServer((connection) => {
           parsedRef.splice(i + 1, 2); // remove key and value from array, and leave whatever commands remain.
           console.log("SET", resp.OK);
           connection.write(resp.OK);
+          console.debug("cach", cach);
         } else {
           connection.write(
             resp.encodeError("ERR wrong number of arguments for command")

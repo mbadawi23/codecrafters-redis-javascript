@@ -83,6 +83,7 @@ const server = net.createServer((connection) => {
   let cach = {};
   connection.on("data", (buffer) => {
     const data = buffer.toString();
+    console.log("data", data);
     const parsed = resp.parse(data);
     console.log("parsed", parsed);
     parsed.forEach((item, i, parsedRef) => {

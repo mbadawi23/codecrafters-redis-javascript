@@ -137,6 +137,7 @@ const server = net.createServer((connection) => {
           );
         }
       } else if (item.toUpperCase() === "GET") {
+        console.log("GET: parsed", parsed);
         if (i + 1 < parsed.length) {
           const k = cach.find((item) => item.id === parsed[i + 1]);
           (k && !k?.expiry) ||

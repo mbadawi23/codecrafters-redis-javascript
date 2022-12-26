@@ -135,7 +135,8 @@ const server = net.createServer((connection) => {
       } else if (item.toUpperCase() === "GET") {
         if (i + 1 < parsed.length) {
           const k = cach.find((item) => item.id === parsed[i + 1]);
-          k && k.expiry > Date.now() - k.timestamp
+          (k && !k?.expiry) ||
+          (k && k?.expiry && k?.expiry > Date.now() - k?.timestamp)
             ? connection.write(resp.encode(k.value))
             : connection.write(resp.NULL_STRING);
         } else {

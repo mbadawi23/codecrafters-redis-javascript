@@ -121,7 +121,7 @@ const server = net.createServer((connection) => {
               id: parsed[i + 1],
               value: parsed[i + 2],
               timestamp: Date.now(),
-              expiry: expiry ? parseInt(expiry) : undefined,
+              expiry: expiry ? parseInt(parsed[i + 3]) : undefined,
             },
           ];
           parsedRef.splice(i + 1, 2); // remove key and value from array, and leave whatever commands remain.

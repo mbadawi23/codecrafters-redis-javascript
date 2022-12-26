@@ -145,7 +145,9 @@ const server = net.createServer((connection) => {
           console.log(
             "(k && k?.expiry && k?.expiry > Date.now() - k?.timestamp)",
             k && k?.expiry && k?.expiry > Date.now() - k?.timestamp
-          )(k && !k?.expiry) ||
+          );
+
+          (k && !k?.expiry) ||
           (k && k?.expiry && k?.expiry > Date.now() - k?.timestamp)
             ? connection.write(resp.encode(k.value))
             : connection.write(resp.NULL_STRING);

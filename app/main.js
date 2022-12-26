@@ -80,7 +80,14 @@ const server = net.createServer((connection) => {
 
   const resp = new Resp();
 
-  let cach = {};
+  let cach = [
+    {
+      id: "key",
+      value: "value",
+      timestamp: Date.now(),
+      expiry: 6000,
+    },
+  ];
   connection.on("data", (buffer) => {
     const data = buffer.toString();
     console.log("data", data);
@@ -100,7 +107,23 @@ const server = net.createServer((connection) => {
         }
       } else if (item.toUpperCase() === "SET") {
         if (i + 2 < parsed.length) {
-          cach[parsed[i + 1]] = parsed[i + 2];
+          // get expiry from xp parameter
+          const expiry = () => {
+            const xpItem = parsedRef.find(
+              (item, fi) => item.toUpperCase() === "PX" && fi < i + 4
+            );
+            const xpIdx = parsedRef.indexOf(xpItem);
+            return parsedRef[xpIdx + 1];
+          };
+          cach = [
+            ...cach,
+            {
+              id: parsed[i + 1],
+              value: parsed[i + 2],
+              timestamp: Date.now(),
+              expiry: expiry ? parseInt(expiry) : undefined,
+            },
+          ];
           parsedRef.splice(i + 1, 2); // remove key and value from array, and leave whatever commands remain.
           console.log("SET", resp.OK);
           connection.write(resp.OK);
@@ -111,8 +134,9 @@ const server = net.createServer((connection) => {
         }
       } else if (item.toUpperCase() === "GET") {
         if (i + 1 < parsed.length) {
-          parsed[i + 1] in cach
-            ? connection.write(resp.encode(cach[parsed[i + 1]]))
+          const k = cach.find((item) => item.id === parsed[i + 1]);
+          k && k.expiry > Date.now() - k.timestamp
+            ? connection.write(resp.encode(k.value))
             : connection.write(resp.NULL_STRING);
         } else {
           connection.write(

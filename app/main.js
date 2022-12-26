@@ -140,6 +140,7 @@ const server = net.createServer((connection) => {
         console.log("GET: parsed", parsed);
         if (i + 1 < parsed.length) {
           const k = cach.find((item) => item.id === parsed[i + 1]);
+          console.log("GET: k", k);
           (k && !k?.expiry) ||
           (k && k?.expiry && k?.expiry > Date.now() - k?.timestamp)
             ? connection.write(resp.encode(k.value))

@@ -101,6 +101,7 @@ const server = net.createServer((connection) => {
       } else if (item.toUpperCase() === "SET") {
         if (i + 2 < parsed.length) {
           cach[parsed[i + 1]] = parsed[i + 2];
+          parsedRef.splice(i + 1, 2); // remove key and value from array, and leave whatever commands remain.
           console.log("SET", resp.OK);
           connection.write(resp.OK);
         } else {

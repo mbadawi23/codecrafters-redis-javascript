@@ -110,7 +110,6 @@ const server = net.createServer((connection) => {
       } else {
         connection.write(`-ERR unknown command ${item}\r\n`);
       }
-      parsedRef.splice(i, 1);
     });
   });
 

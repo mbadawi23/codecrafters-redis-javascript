@@ -125,7 +125,8 @@ const server = net.createServer((connection) => {
               expiry: expiry ? parseInt(parsed[i + 4]) : undefined,
             },
           ];
-          parsedRef.splice(i + 1, 2); // remove key and value from array, and leave whatever commands remain.
+          // remove command, key and value from array, and leave whatever commands remain.
+          expiry ? parsedRef.splice(i, 5) : parsedRef.splice(i, 3);
           console.log("SET", resp.OK);
           connection.write(resp.OK);
           console.debug("cach", cach);

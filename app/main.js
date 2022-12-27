@@ -116,7 +116,6 @@ const server = net.createServer((connection) => {
             const xpIdx = parsedRef.indexOf(xpItem);
             return parsedRef[xpIdx + 1];
           };
-          console.log("parsed[i + 4])", parsed[i + 4]);
           cach = [
             ...cach,
             {
@@ -130,22 +129,14 @@ const server = net.createServer((connection) => {
           expiry ? parsedRef.splice(i, 5) : parsedRef.splice(i, 3);
           console.log("SET", resp.OK);
           connection.write(resp.OK);
-          console.debug("cach", cach);
         } else {
           connection.write(
             resp.encodeError("ERR wrong number of arguments for command")
           );
         }
       } else if (item.toUpperCase() === "GET") {
-        console.log("GET: parsed", parsed);
         if (i + 1 < parsed.length) {
           const k = cach.find((item) => item.id === parsed[i + 1]);
-          console.log("GET: k", k);
-          console.log("(k && !k?.expiry)", k && !k?.expiry);
-          console.log(
-            "(k && k?.expiry && k?.expiry > Date.now() - k?.timestamp)",
-            k && k?.expiry && k?.expiry > Date.now() - k?.timestamp
-          );
 
           (k && !k?.expiry) ||
           (k && k?.expiry && k?.expiry > Date.now() - k?.timestamp)

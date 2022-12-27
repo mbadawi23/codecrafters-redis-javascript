@@ -151,6 +151,7 @@ const server = net.createServer((connection) => {
           (k && k?.expiry && k?.expiry > Date.now() - k?.timestamp)
             ? connection.write(resp.encode(k.value))
             : connection.write(resp.NULL_STRING);
+          parsedRef.splice(i, 2);
         } else {
           connection.write(
             resp.encodeError("ERR wrong number of arguments for command")
